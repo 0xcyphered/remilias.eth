@@ -100,6 +100,10 @@ PublicResolver includes the following profiles that implements different EIPs.
 
 ## Developer guide
 
+### Forking mainnet
+
+`npx hardhat node --fork https://mainnet.infura.io/v3/INFURA_KEY --hostname 0.0.0.0`
+
 ### Prettier pre-commit hook
 
 This repo runs a husky precommit to prettify all contract files to keep them consistent. Add new folder/files to `prettier format` script in package.json. If you need to add other tasks to the pre-commit script, add them to `.husky/pre-commit`
