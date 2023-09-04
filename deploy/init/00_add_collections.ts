@@ -52,7 +52,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   for (let index = 0; index < collections.length; index++) {
     const collection = collections[index]
 
-    const isAdded = await RemiliasRegistrarControllerContract.nftContracts(
+    const isAdded = await RemiliasRegistrarControllerContract.approvedCollections(
       collection,
     )
     if (!isAdded) {

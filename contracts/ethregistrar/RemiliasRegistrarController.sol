@@ -49,8 +49,8 @@ contract RemiliasRegistrarController is
     ReverseRegistrar public immutable reverseRegistrar;
     IRemiliasNameWrapper public immutable nameWrapper;
 
-    mapping(address => bool) public nftContracts;
-    mapping(address => mapping(uint256 => string)) public nftIds;
+    mapping(address => bool) public approvedCollections;
+    mapping(address => mapping(uint256 => string)) public domains;
 
     event NameRegistered(
         string name,
@@ -76,13 +76,13 @@ contract RemiliasRegistrarController is
 
     // Authorises a nft contract, nft holders can set name and rename their nfts.
     function addCollection(address collection) external onlyOwner {
-        nftContracts[collection] = true;
+        approvedCollections[collection] = true;
         emit CollectionAdded(collection);
     }
 
     // Revoke milady permission for an nft contract.
     function removeCollection(address collection) external onlyOwner {
-        nftContracts[collection] = false;
+        approvedCollections[collection] = false;
         emit CollectionRemoved(collection);
     }
 
@@ -103,10 +103,10 @@ contract RemiliasRegistrarController is
         address resolver,
         bytes[] calldata data
     ) public {
-        if (!nftContracts[collection]) {
+        if (!approvedCollections[collection]) {
             revert InvalidCollection();
         }
-        if (valid(nftIds[collection][nft])) {
+        if (valid(domains[collection][nft])) {
             revert RegisteredNFT();
         }
 
@@ -115,7 +115,7 @@ contract RemiliasRegistrarController is
             revert UnauthorisedHolder();
         }
 
-        nftIds[collection][nft] = name;
+        domains[collection][nft] = name;
 
         uint256 tokenId = uint256(keccak256(bytes(name)));
         base.register(tokenId, collection, nft);
@@ -134,7 +134,7 @@ contract RemiliasRegistrarController is
     }
 
     function resetOwner(address collection, uint256 nft) external override {
-        string memory name = nftIds[collection][nft];
+        string memory name = domains[collection][nft];
         uint256 tokenId = uint256(keccak256(bytes(name)));
         require(valid(name), "Token have no name");
         address tokenOwner = ERC721(collection).ownerOf(nft);
