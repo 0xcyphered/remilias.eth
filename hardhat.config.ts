@@ -3,7 +3,6 @@ import { exec as _exec } from 'child_process'
 import '@nomiclabs/hardhat-ethers'
 import '@nomiclabs/hardhat-solhint'
 import '@nomiclabs/hardhat-truffle5'
-import '@nomiclabs/hardhat-waffle'
 import dotenv from 'dotenv'
 import 'hardhat-abi-exporter'
 import 'hardhat-contract-sizer'
@@ -93,6 +92,7 @@ const config: HardhatUserConfig = {
       'INameWrapper$',
       'SHA1$',
       'Ownable$',
+      'ERC721$',
       'NameResolver$',
       'TestBytesUtils$',
       'legacy/*',

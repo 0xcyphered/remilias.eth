@@ -9,8 +9,8 @@ import {ReverseRegistrar} from "../reverseRegistrar/ReverseRegistrar.sol";
 import {ReverseClaimer} from "../reverseRegistrar/ReverseClaimer.sol";
 import {IRemiliasRegistrarController} from "./IRemiliasRegistrarController.sol";
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {ERC721} from "solady/src/tokens/ERC721.sol";
+import {Ownable} from "solady/src/auth/Ownable.sol";
 
 import {IERC165} from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import {Address} from "@openzeppelin/contracts/utils/Address.sol";
@@ -72,6 +72,7 @@ contract RemiliasRegistrarController is
         base = _base;
         reverseRegistrar = _reverseRegistrar;
         nameWrapper = _nameWrapper;
+        _initializeOwner(msg.sender);
     }
 
     // Authorises a nft contract, nft holders can set name and rename their nfts.
@@ -139,7 +140,7 @@ contract RemiliasRegistrarController is
         require(valid(name), "Token have no name");
         address tokenOwner = ERC721(collection).ownerOf(nft);
         address currentOwner = base.ownerOf(tokenId);
-        if (tokenOwner != msg.sender){
+        if (tokenOwner != msg.sender) {
             revert UnauthorisedHolder();
         }
         if (currentOwner == address(nameWrapper)) {

@@ -1,9 +1,9 @@
 pragma solidity >=0.8.4;
 
+import {Ownable} from "solady/src/auth/Ownable.sol";
 import "../registry/ENS.sol";
 import "./IRemiliasRegistrar.sol";
 import "./ERC721Remilias.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract RemiliasRegistrar is ERC721Remilias, IRemiliasRegistrar, Ownable {
     // The ENS registry
@@ -52,6 +52,7 @@ contract RemiliasRegistrar is ERC721Remilias, IRemiliasRegistrar, Ownable {
     constructor(ENS _ens, bytes32 _baseNode) ERC721Remilias("", "") {
         ens = _ens;
         baseNode = _baseNode;
+        _initializeOwner(msg.sender);
     }
 
     modifier live() {
@@ -64,7 +65,7 @@ contract RemiliasRegistrar is ERC721Remilias, IRemiliasRegistrar, Ownable {
 
     modifier onlyController() {
         if (!controllers[msg.sender]) {
-            revert Unauthorized();
+            revert UnauthorizedController();
         }
         _;
     }
@@ -172,7 +173,7 @@ contract RemiliasRegistrar is ERC721Remilias, IRemiliasRegistrar, Ownable {
      */
     function reclaim(uint256 id, address owner) external override live {
         if (!_isApprovedOrOwner(msg.sender, id)) {
-            revert Unauthorized();
+            revert UnauthorizedOwner();
         }
         ens.setSubnodeOwner(baseNode, bytes32(id), owner);
     }

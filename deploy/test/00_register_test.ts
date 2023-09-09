@@ -92,7 +92,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     }
     {
       const nftContract = await ethers.getContractAt(
-        'ERC721',
+        'solady/src/tokens/ERC721.sol:ERC721',
         '0x8fc0d90f2c45a5e7f94904075c952e0943cfccfd',
       )
       await nftContract.transferFrom(deployer, _whale.address, 4176)

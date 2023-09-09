@@ -1,5 +1,5 @@
 pragma solidity >=0.8.4;
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {Ownable} from "solady/src/auth/Ownable.sol";
 import "./profiles/ABIResolver.sol";
 import "./profiles/AddrResolver.sol";
 import "./profiles/ContentHashResolver.sol";
@@ -26,6 +26,10 @@ contract RemiliasResolver is
     TextResolver,
     ExtendedResolver
 {
+    constructor() payable {
+        _initializeOwner(msg.sender);
+    }
+
     function isAuthorised(bytes32) internal view override returns (bool) {
         return msg.sender == owner();
     }

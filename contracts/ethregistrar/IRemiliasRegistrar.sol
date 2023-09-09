@@ -1,11 +1,12 @@
 import "../registry/ENS.sol";
 import "./IBaseRegistrar.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import {ERC721} from "solady/src/tokens/ERC721.sol";
 
 interface IRemiliasRegistrar is IERC721 {
     error NotStarted();
     error Unavailable();
-    error Unauthorized();
+    error UnauthorizedOwner();
+    error UnauthorizedController();
 
     event ControllerAdded(address indexed controller);
     event ControllerRemoved(address indexed controller);
