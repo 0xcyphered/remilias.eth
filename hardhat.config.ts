@@ -3,6 +3,7 @@ import { exec as _exec } from 'child_process'
 import '@nomiclabs/hardhat-ethers'
 import '@nomiclabs/hardhat-solhint'
 import '@nomiclabs/hardhat-truffle5'
+import '@nomicfoundation/hardhat-verify'
 import dotenv from 'dotenv'
 import 'hardhat-abi-exporter'
 import 'hardhat-contract-sizer'
@@ -120,6 +121,12 @@ const config: HardhatUserConfig = {
         artifacts: [archivedDeploymentPath],
       },
     ],
+  },
+  sourcify: {
+    enabled: true,
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_KEY,
   },
 }
 
