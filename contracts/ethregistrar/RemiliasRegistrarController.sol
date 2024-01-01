@@ -76,9 +76,15 @@ contract RemiliasRegistrarController is
     }
 
     // Authorises a nft contract, nft holders can set name and rename their nfts.
+    function addCollections(address[] memory collections) external onlyOwner {
+        for (uint i = 0; i < collections.length; i++) {
+            _addCollection(collections[i]);
+        }
+    }
+
+    // Authorises a nft contract, nft holders can set name and rename their nfts.
     function addCollection(address collection) external onlyOwner {
-        approvedCollections[collection] = true;
-        emit CollectionAdded(collection);
+        _addCollection(collection);
     }
 
     // Revoke milady permission for an nft contract.
@@ -184,5 +190,11 @@ contract RemiliasRegistrarController is
             resolver,
             string.concat(name, "remilias.eth")
         );
+    }
+
+    // Authorises a nft contract, nft holders can set name and rename their nfts.
+    function _addCollection(address collection) internal {
+        approvedCollections[collection] = true;
+        emit CollectionAdded(collection);
     }
 }
